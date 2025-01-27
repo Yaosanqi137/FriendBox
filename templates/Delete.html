@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="zh_CN">
+<head>
+    <meta charset="UTF-8">
+    <title>删除账户</title>
+    <style>
+        body {
+            background-color: red;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh; /* 使内容垂直居中 */
+            margin: 0;
+            font-family: Arial, sans-serif; /* 设置字体 */
+        }
+        h1 {
+            text-align: center;
+            font-size: 36px; /* 调大字号 */
+            color: white; /* 设置标题颜色为白色 */
+            margin: 10px 0; /* 调整标题之间的间距 */
+        }
+        input[type="text"] {
+            width: 300px;
+            padding: 10px;
+            font-size: 24px; /* 调大输入框字号 */
+            text-align: center;
+            margin-top: 20px; /* 调整输入框与按钮的间距 */
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 24px; /* 调大按钮字号 */
+            margin-top: 20px; /* 调整按钮与输入框的间距 */
+        }
+        .back-button {
+            display: inline-block;
+            padding: 20px 40px; /* 增加按钮的尺寸 */
+            font-size: 32px; /* 调大按钮字号 */
+            margin-top: 40px; /* 调整按钮与上方内容的间距 */
+            background-color: white; /* 按钮背景颜色 */
+            color: red; /* 按钮文字颜色 */
+            text-decoration: none; /* 去掉下划线 */
+            border-radius: 10px; /* 圆角边框 */
+            border: 2px solid red; /* 边框样式 */
+            cursor: pointer; /* 鼠标悬停时显示手型 */
+            transition: background-color 0.3s, color 0.3s; /* 添加过渡效果 */
+        }
+        .back-button:hover {
+            background-color: red; /* 悬停时背景颜色变为红色 */
+            color: white; /* 悬停时文字颜色变为白色 */
+        }
+    </style>
+</head>
+<body>
+<h1>你真的要删除你的账户吗!?</h1>
+<h1>Are You Sure About That!?</h1>
+<form method="POST" action="">
+    {% csrf_token %}
+    <input type="text" name="confirm" placeholder="在此输入'我确认'" required>
+    <button type="submit">确定</button>
+</form>
+<br><br><br><br><br><br><br><br><br>
+<h1>我不是，我没有</h1>
+<a href="/" class="back-button">点击返回主界面</a>
+</body>
+</html>

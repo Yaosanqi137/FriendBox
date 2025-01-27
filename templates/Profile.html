@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="zh_CN">
+<head>
+    <meta charset="UTF-8">
+    <title>个人资料</title>
+    <link rel="icon" href="https://img.fastmirror.net/s/2024/08/16/66bf44708b1e7.png">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to bottom right, #e0eafc, #cfdef3);
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* 水平居中 */
+        }
+        h1 {
+            text-align: center;
+            color: #444;
+            margin-top: 50px;
+            font-size: 2.5rem;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        }
+        .form-container {
+            display: flex; /* 使用 flexbox 实现左右并排 */
+            justify-content: space-around; /* 两个表单之间的间距 */
+            width: 100%;
+            min-height: 400px;
+            max-width: 1200px; /* 最大宽度 */
+            margin: 20px auto; /* 上下外边距 */
+        }
+        form {
+            background-color: #ffffff;
+            padding: 30px;
+            border: 1px solid #ddd;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            width: 43%; /* 每个表单占据48%的宽度 */
+            transition: transform 0.2s;
+        }
+        form:hover {
+            transform: scale(1.02);
+        }
+        label {
+            font-weight: bold;
+            color: #555;
+            margin-bottom: 8px;
+            display: block;
+        }
+        input[type="text"], input[type="email"], input[type="password"], textarea, input[type="file"] {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border 0.3s, box-shadow 0.3s;
+        }
+        input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focus, textarea:focus {
+            border-color: #007BFF;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+            outline: none;
+        }
+        input[type="submit"] {
+            padding: 12px 25px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: background-color 0.3s, transform 0.2s;
+            display: block;
+            margin: 20px auto;
+        }
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px);
+        }
+        button {
+            padding: 12px 25px;
+            background-color: #6c757d;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-right: 10px;
+            font-size: 16px;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+        button:hover {
+            background-color: #5a6268;
+            transform: translateY(-2px);
+        }
+        .button-group {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .avatar-form {
+            max-height: 400px; 
+        }
+        .avatar-container {
+            text-align: center; /* 使头像和标签居中 */
+            margin-bottom: 15px;
+        }
+        img {
+            max-width: 150px;
+            border-radius: 50%;
+            margin-bottom: 15px;
+            border: 2px solid #007BFF;
+        }
+    </style>
+</head>
+<body>
+<h1>个人资料</h1>
+<div class="form-container">
+    <form action="" method="POST" class="avatar-form" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="avatar-container">
+            <label for="avatar-upload">修改头像</label>
+            <img src="{{ profile.avatar.url }}" alt="当前头像">
+            <label for="avatar">上传头像</label>
+            <input type="file" name="avatar" id="avatar">
+        </div>
+        <input type="submit" value="提交头像">
+    </form>
+
+    <form action="" method="POST">
+        {% csrf_token %}
+        {{ profileForm.as_p }}
+
+        <input type="submit" value="保存资料">
+    </form>
+</div>
+
+<div class="button-group">
+    <button onclick="location.href='/logout'">登出账号</button>
+    <button onclick="location.href='/'">点此返回至主页面</button>
+    <button onclick="location.href='/unregister'">注销账户</button>
+    <button onclick="location.href='/delete'">删除账户</button>
+</div>
+</body>
+</html>

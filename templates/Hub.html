@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="zh_CN">
+<head>
+    <meta charset="UTF-8">
+    <title>脱单盲盒</title>
+    <link rel="icon" href="https://img.fastmirror.net/s/2024/08/16/66bf44708b1e7.png">
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+            transition: background-color 0.3s, color 0.3s;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        body {
+            background-image: url("../images/hub.png");
+            background-size: cover;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            color: #333;
+        }
+
+        #background-video {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transform: translate(-50%, -50%);
+            z-index: 1;
+            display: block;
+        }
+
+        .sidebar {
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            position: fixed;
+            left: -250px;
+            top: 0;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: start;
+            z-index: 2;
+            transition: left 0.5s;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar.show {
+            left: 0;
+        }
+
+        .sidebar .user-info {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .sidebar img {
+            border-radius: 50%;
+            width: 100px;
+            height: 100px;
+            border: 2px solid #ddd;
+            margin-bottom: 10px;
+            transition: border-color 0.3s;
+        }
+
+        .sidebar .user-info span {
+            font-size: 18px;
+            font-weight: bold;
+            color: #555;
+            text-align: center;
+            transition: color 0.3s;
+        }
+
+        .sidebar button {
+            padding: 10px 20px;
+            font-size: 14px;
+            cursor: pointer;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            transition: background-color 0.3s;
+            width: 100%;
+        }
+
+        .sidebar button:hover {
+            background-color: #0056b3;
+        }
+
+        .sidebar .user-info button {
+            background-color: #6c757d;
+            display: none;
+            width: auto;
+            margin-top: 5px;
+        }
+
+        .sidebar .user-info:hover button {
+            display: block;
+        }
+
+        .sidebar .user-info button:hover {
+            background-color: #5a6268;
+        }
+
+        .bottom-bar {
+            background-color: rgba(255, 255, 255, 0.5);
+            position: fixed;
+            left: 170px;
+            right: 5px;
+            bottom: -100%;
+            width: calc(100% - 190px);
+            height: 95%;
+            z-index: 2;
+            transition: bottom 0.5s;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+            scrollbar-width: none;
+            overflow-y: scroll;
+            border: 5px solid whitesmoke;
+            border-radius: 10px;
+        }
+
+        .bottom-bar.show {
+            bottom: 0;
+        }
+    </style>
+</head>
+<body>
+<!-- 侧边栏 -->
+<div class="sidebar" id="sidebar">
+    <div class="user-info">
+        <img src="{{ profile.avatar.url }}" alt="头像">
+        <span>{{ user.username }}</span>
+        <button onclick="location.href='/logout'">登出</button>
+        <button onclick="location.href='/profile'">修改我的盲盒</button>
+    </div>
+    <button onclick="loadContent('{{ boybox }}')">男生盲盒</button>
+    <button onclick="loadContent('{{ girlbox }}')">女生盲盒</button>
+    <button onclick="loadContent('{{ mybox }}')">我的盲盒</button>
+</div>
+
+<!-- 底部栏 -->
+<div class="bottom-bar" id="bottom-bar">
+    <iframe id="content-frame" style="width: 100%; height: 100%; border: none; overflow: hidden;"></iframe>
+</div>
+
+<video id="background-video" autoplay muted playsinline>
+    <source src="../images/anime.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+</video>
+
+<script>
+    window.addEventListener('load', function() {
+        const video = document.getElementById('background-video');
+        const sidebar = document.getElementById('sidebar');
+        const bottomBar = document.getElementById('bottom-bar');
+
+        video.onended = function() {
+            video.style.display = 'none';
+            document.body.style.overflow = 'auto';
+            sidebar.classList.add('show');
+            bottomBar.classList.add('show');
+            loadContent('{{ mybox }}'); // 初始化加载“我的盲盒”
+        };
+    });
+
+    function loadContent(type) {
+        const contentFrame = document.getElementById('content-frame');
+        contentFrame.src = type;
+    }
+</script>
+</body>
+</html>

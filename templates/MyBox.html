@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="zh_CN">
+<head>
+    <meta charset="UTF-8">
+    <title>我的盲盒</title>
+    <style>
+        /* 通用样式 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        .card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 10px;
+            padding: 20px;
+            width: 300px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+        .card img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            margin-bottom: 15px;
+        }
+        .card-content {
+            text-align: center;
+        }
+        .card-content h2 {
+            margin: 0 0 10px;
+            font-size: 24px;
+            color: #333;
+        }
+        .card-content p {
+            margin: 5px 0;
+            font-size: 16px;
+            color: #666;
+        }
+        .card-intro {
+            margin-top: 15px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+            font-size: 14px;
+            color: #888;
+            line-height: 1.5;
+            text-align: center;
+        }
+        .result-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 20px auto;
+            padding: 20px;
+            width: 600px;
+            background-color: #eaf7ff;
+            border: 2px solid #007bff;
+            border-radius: 15px;
+            text-align: center;
+            font-size: 28px;
+            color: #007bff;
+        }
+        .result-card img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            margin-bottom: 15px;
+        }
+        .result-card h2 {
+            margin: 0 0 10px;
+            font-size: 24px;
+            color: #333;
+        }
+        .result-card p {
+            margin: 5px 0;
+            font-size: 16px;
+            color: #666;
+        }
+        .result-card .card-intro {
+            margin-top: 15px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+            font-size: 14px;
+            color: #888;
+            line-height: 1.5;
+        }
+        .cards-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        button {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            font-size: 18px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .active {
+            border: 2px solid yellow;
+            box-shadow: 0 0 10px yellow;
+        }
+        .inactive {
+            opacity: 0.5;
+        }
+    </style>
+</head>
+<body>
+<!-- 页面标题 -->
+<h1>{{ profile.name }}的盲盒</h1>
+<h1>抽取 Box</h1>
+
+<!-- 抽取结果展示区域 -->
+<div id="result" class="result-card">
+    <p>点击下方按钮开始抽取<br>注:要完善个人资料才可以抽取哦</p>
+</div>
+
+<!-- 盲盒展示区域 -->
+<div class="cards-container" id="boxes">
+    {% for box in boxes %}
+        <div class="card" data-id="{{ box.id }}">
+            <img src="{{ box.avatar.url }}" alt="头像">
+            <div class="card-content">
+                <h2>{{ box.name }}</h2>
+                <p>性别: {% if box.sex == 'male' %}男{% else %}女{% endif %}</p>
+                <p>年龄: {{ box.age }}岁</p>
+                <p>联系邮箱: {{ box.email }}</p>
+                <p>地址: {{ box.address }}</p>
+                <p>体重: {{ box.weight }}kg</p>
+                <p>身高: {{ box.height }}cm</p>
+                <div class="card-intro">
+                    <p>自我介绍: {{ box.intro }}</p>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+<!-- 抽取按钮 -->
+<button id="draw-button">抽取</button>
+
+<script>
+    // 获取所有 card 元素
+    const cards = document.querySelectorAll('.card');
+    const drawButton = document.getElementById('draw-button');
+    const resultDiv = document.getElementById('result');
+
+    let intervalId;
+    let currentIndex = 0;
+
+    // 闪现效果
+    function startFlashing() {
+        intervalId = setInterval(() => {
+            // 清除上一个 card 的 active 类
+            cards[currentIndex].classList.remove('active');
+            cards[currentIndex].classList.add('inactive');
+
+            // 切换到下一个 card
+            currentIndex = (currentIndex + 1) % cards.length;
+
+            // 添加 active 类到当前 card
+            cards[currentIndex].classList.remove('inactive');
+            cards[currentIndex].classList.add('active');
+        }, Math.random() * 300); // 随机间隔时间
+    }
+
+    // 停止闪现并显示结果
+    function stopFlashing() {
+        clearInterval(intervalId);
+        const selectedCard = cards[currentIndex];
+        resultDiv.innerHTML = `
+                <div class="result-card">
+                    <img src="${selectedCard.querySelector('img').src}" alt="头像">
+                    <h2>${selectedCard.querySelector('h2').textContent}</h2>
+                    <p> ${selectedCard.querySelector('p:nth-of-type(1)').textContent}</p>
+                    <p> ${selectedCard.querySelector('p:nth-of-type(2)').textContent}</p>
+                    <p> ${selectedCard.querySelector('p:nth-of-type(3)').textContent}</p>
+                    <p> ${selectedCard.querySelector('p:nth-of-type(4)').textContent}</p>
+                    <p> ${selectedCard.querySelector('p:nth-of-type(5)').textContent}</p>
+                    <p> ${selectedCard.querySelector('p:nth-of-type(6)').textContent}</p>
+                    <div class="card-intro">
+                        <p> ${selectedCard.querySelector('.card-intro p').textContent}</p>
+                    </div>
+                </div>
+            `;
+    }
+
+    // 按钮点击事件
+    drawButton.addEventListener('click', () => {
+        // 开始闪现
+        startFlashing();
+
+        // 3 秒后停止闪现
+        setTimeout(stopFlashing, Math.random() * 9000 + 1000);
+    });
+</script>
+</body>
+</html>

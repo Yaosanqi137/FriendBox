@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="zh_CN">
+<head>
+    <meta charset="UTF-8">
+    <title>女生盲盒</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: transparent; /* 背景透明 */
+            margin: 0;
+            padding: 0;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-top: 20px;
+            font-size: 28px;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            flex-direction: column; /* 竖排排版 */
+            align-items: flex-start; /* 左对齐 */
+            width: 100%;
+        }
+        li {
+            background-color: rgba(255, 255, 255, 0.8); /* 卡片背景半透明 */
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin: 15px 0; /* 上下间距 */
+            padding: 20px;
+            width: 100%; /* 占据一整行 */
+            text-align: left; /* 左对齐 */
+        }
+        img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 20px; /* 图片与文字的间距 */
+            float: left; /* 图片左对齐 */
+        }
+        b {
+            color: #333;
+        }
+        .intro-box {
+            background-color: rgba(240, 240, 240, 0.9); /* 自我介绍框背景 */
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding: 10px;
+            margin-top: 15px;
+            font-size: 14px;
+            color: #666;
+            clear: both; /* 清除浮动 */
+        }
+        .search-bar {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            display: flex;
+            align-items: center;
+        }
+        .search-bar input[type="text"] {
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-right: 5px;
+        }
+        .search-bar button {
+            padding: 5px 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: #f0f0f0;
+            cursor: pointer;
+        }
+        .search-bar button:hover {
+            background-color: #e0e0e0;
+        }
+    </style>
+</head>
+<body>
+<h1>女生盲盒</h1>
+
+<!-- 搜索栏 -->
+<div class="search-bar">
+    <form method="get" action="">
+        <input type="text" name="name" placeholder="输入名字" value="{{ request.GET.name }}">
+        <input type="text" name="height" placeholder="输入身高" value="{{ request.GET.height }}">
+        <input type="text" name="weight" placeholder="输入体重" value="{{ request.GET.weight }}">
+        <input type="text" name="age" placeholder="输入年龄" value="{{ request.GET.age }}">
+        <button type="submit">筛选</button>
+    </form>
+</div>
+
+<ul>
+    {% for girl in girls %}
+        <li>
+            <img src="{{ girl.avatar.url }}" alt="{{ girl.name }}">
+            <b>{{ girl.name }}</b><br>
+            身高: <b>{{ girl.height }}cm</b><br>
+            体重: <b>{{ girl.weight }}kg</b><br>
+            年龄: <b>{{ girl.age }}岁</b><br>
+            <div class="intro-box">
+                自我介绍: <b>{{ girl.intro }}</b>
+            </div>
+        </li>
+    {% endfor %}
+</ul>
+</body>
+</html>

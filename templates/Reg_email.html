@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="zh_CN">
+<head>
+    <meta charset="UTF-8">
+    <title>激活账户</title>
+    <style>
+        /* 通用样式 */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+        .email-container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        .email-header {
+            background-color: #007bff;
+            color: #ffffff;
+            padding: 15px;
+            border-radius: 10px 10px 0 0;
+            font-size: 24px;
+        }
+        .email-content {
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .email-content p {
+            margin: 10px 0;
+        }
+        .email-content a {
+            display: inline-block;
+            margin: 15px 0;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        .email-content a:hover {
+            background-color: #0056b3;
+        }
+        .email-footer {
+            margin-top: 20px;
+            padding: 10px;
+            font-size: 12px;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+<div class="email-container">
+    <!-- 邮件头部 -->
+    <div class="email-header">
+        <p>欢迎注册脱单盲盒网站！</p>
+    </div>
+
+    <!-- 邮件内容 -->
+    <div class="email-content">
+        <p>{{ user.username }}，你好！</p>
+        <p>感谢您注册脱单盲盒网站！请点击以下按钮激活您的账户：</p>
+        <p>
+            <a href="http://{{ domain }}{% url 'activate' uidb64=uid token=token %}">点此激活账户</a>
+        </p>
+        <p>如果成功激活，网站将会自动跳转到主页，否则会重新定向回登录界面！</p>
+        <p>如果您没有注册，请忽略此邮件。</p>
+    </div>
+
+    <!-- 邮件底部 -->
+    <div class="email-footer">
+        <p>此邮件由系统自动发送，请勿回复。</p>
+    </div>
+</div>
+</body>
+</html>

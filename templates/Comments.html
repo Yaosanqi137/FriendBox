@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="zh_CN">
+<head>
+  <meta charset="UTF-8">
+  <title>Comments</title>
+</head>
+<body>
+{% for comment in comments %}
+    <div>
+        <p>{{ comment.content }}</p>
+        <small>{{ comment.author }} 的评论 发布时间:{{ comment.created_at }}</small>
+        <a href="{% url 'reply_comment' comment.id %}">回复</a>
+        {% for reply in comment.replies.all %}
+            <div style="margin-left: 20px;">
+                <p>{{ reply.content }}</p>
+                <small>{{ reply.author }} 的回复 发布时间: {{ reply.created_at }}</small>
+                <a href="{% url 'reply_comment' reply.id %}">回复</a>
+            </div>
+        {% endfor %}
+    </div>
+{% endfor %}
+
+<form method="POST">
+    {% csrf_token %}
+    {{ commentForm.as_p }}
+    <button type="submit">发布</button>
+</form>
+
+</body>
+</html>
